@@ -4,6 +4,11 @@ import logging
 
 from loguru import logger as ll
 
+from wwqdrh.logger.logger import BasicLogger
+
+__all__ = ("setup_logger", "BasicLogger")
+
+
 def setup_logger(f: str, rotation: str = "00:00"):
     """Set up stderr logging format.
 
@@ -23,5 +28,5 @@ def setup_logger(f: str, rotation: str = "00:00"):
     ll.add(sys.stderr, format=log_format)
     ll.add(f, rotation=rotation)
     # By default all the logging messages are disabled
-    ll.enable("charger") 
+    ll.enable("charger")
     return ll
