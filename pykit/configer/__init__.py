@@ -3,12 +3,16 @@
 """
 import typing
 import json
+import os
 from configparser import ConfigParser
 from pathlib import Path
 
 import yaml
 from pydantic import BaseSettings
 from pydantic.env_settings import SettingsSourceCallable
+
+
+NilPath = Path("")
 
 
 class CustomSettingsSource:
@@ -21,6 +25,36 @@ class CustomSettingsSource:
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(path={self.path!r})"
+
+
+class EnvSettingsSource(CustomSettingsSource):
+    def __init__(self, prefix: str):
+        super().__init__(NilPath)
+
+        self.prefix = prefix.lower() + "."
+
+    def __call__(self, settings: BaseSettings) -> dict[str, typing.Any]:
+        """
+        获取所有{prefix}前缀的环境变量，都转为小写
+
+        并且按照 `.` 进行分割成子字典
+        """
+        vals: dict[str, typing.Any] = dict()
+        for key, val in os.environ.items():
+            if key.lower().startswith(self.prefix):
+                envkey = key.lower().lstrip(self.prefix)
+
+                cur = vals
+                keyparts = envkey.split(".")
+                for i in range(len(keyparts)):
+                    part = keyparts[i]
+                    if part not in cur:
+                        if i < len(keyparts) - 1:
+                            cur[part] = dict()
+                            cur = cur[part]
+                        else:
+                            cur[part] = val
+        return vals
 
 
 class JsonSettingsSource(CustomSettingsSource):
@@ -55,7 +89,7 @@ class YamlSettingsSource(CustomSettingsSource):
         return yaml.safe_load(self.path.read_text(encoding))
 
 
-def NewSetting(datapath: Path, name: str, mode: str = ""):
+def NewSetting(datapath: Path, name: str, mode: str = "", envprefix: str = "PYKIT"):
     class SettingsBase(BaseSettings):
         """
         项目设置的基类
@@ -102,6 +136,10 @@ def NewSetting(datapath: Path, name: str, mode: str = ""):
                 if yaml_file.exists():
                     yaml_settings_source = YamlSettingsSource(yaml_file)
                     default_settings.add(yaml_settings_source)
+
+                # env conf
+                env_settings_source = EnvSettingsSource(envprefix)
+                default_settings.add(env_settings_source)
 
                 return tuple(default_settings)
 

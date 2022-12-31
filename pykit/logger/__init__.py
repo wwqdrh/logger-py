@@ -4,7 +4,7 @@ import logging
 
 from loguru import logger as ll
 
-from wwqdrh.logger.logger import BasicLogger
+from pykit.logger.logger import BasicLogger
 
 __all__ = ("setup_logger", "BasicLogger")
 

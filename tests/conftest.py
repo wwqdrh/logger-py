@@ -3,7 +3,7 @@ import os
 import shutil
 import pytest
 
-from wwqdrh.logger import BasicLogger
+from pykit.logger import BasicLogger
 
 
 @pytest.fixture(scope="session")

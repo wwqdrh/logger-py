@@ -3,7 +3,7 @@ import datetime, os
 
 from loguru import logger
 
-from wwqdrh.logger import setup_logger, BasicLogger
+from pykit.logger import setup_logger, BasicLogger
 
 
 testdata = Path(__file__).parents[0] / "testdata"
