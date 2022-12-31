@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "pykit"
-version = "0.1.0"
+version = "0.0.2"
 description = ""
 authors = ["wwqdrh <huiloademail@163.com>"]
 readme = "README.md"
-packages = [{include = "pykit/logger"}]
+packages = [{include = "pykit/logger"}, {include = "pykit/configer"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"

@@ -124,7 +124,7 @@ def NewSetting(datapath: Path, name: str, mode: str = "", envprefix: str = "PYKI
                 # ini配置文件
                 ini_file = datapath / f"{name}.ini"
                 if mode != "":
-                    json_file = datapath / f"{name}.{mode}.ini"
+                    ini_file = datapath / f"{name}.{mode}.ini"
                 if ini_file.exists():
                     ini_settings_source = IniSettingsSource(ini_file)
                     default_settings.add(ini_settings_source)
@@ -132,7 +132,7 @@ def NewSetting(datapath: Path, name: str, mode: str = "", envprefix: str = "PYKI
                 # yaml配置文件
                 yaml_file = datapath / f"{name}.yaml"
                 if mode != "":
-                    json_file = datapath / f"{name}.{mode}.yaml"
+                    yaml_file = datapath / f"{name}.{mode}.yaml"
                 if yaml_file.exists():
                     yaml_settings_source = YamlSettingsSource(yaml_file)
                     default_settings.add(yaml_settings_source)
