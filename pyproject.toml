@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pykit"
-version = "0.0.2"
+version = "0.0.3"
 description = ""
 authors = ["wwqdrh <huiloademail@163.com>"]
 readme = "README.md"
@@ -21,6 +21,10 @@ mypy = "^0.991"
 
 [tool.poetry.group.types.dependencies]
 types-pyyaml = "^6.0.12.2"
+
+
+[tool.poetry.group.state.dependencies]
+peewee = "^3.15.4"
 
 [build-system]
 requires = ["poetry-core"]
